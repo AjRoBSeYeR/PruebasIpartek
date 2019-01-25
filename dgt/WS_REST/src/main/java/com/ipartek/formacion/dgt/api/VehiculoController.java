@@ -32,13 +32,19 @@ public class VehiculoController {
 	}
 
 	@RequestMapping(value = { "/api/vehiculo/{id}" }, method = RequestMethod.GET)
-	public ResponseEntity<Coche> detalle(@PathVariable long id) {
+	public ResponseEntity<Coche> detalle(@PathVariable String id) {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
-		if (id > 0) {
-			Coche c = cocheDAO.getById(id);
-			if (c != null) {
-				response = new ResponseEntity<Coche>(c, HttpStatus.OK);
+		try {
+			int idint=Integer.parseInt(id);
+			if (idint > 0) {
+				Coche c = cocheDAO.getById(idint);
+				if (c != null) {
+					response = new ResponseEntity<Coche>(c, HttpStatus.OK);
+				}
 			}
+		} catch (Exception e) {
+			response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
+		
 		}
 		return response;
 	}
@@ -47,10 +53,14 @@ public class VehiculoController {
 	public ResponseEntity<Coche> eliminar(@PathVariable long id) throws SQLException {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		if (id > 0) {
-			if (cocheDAO.delete(id)) {
-				response = new ResponseEntity<Coche>(HttpStatus.OK);
-			} else {
-				response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
+			try {
+				if (cocheDAO.delete(id)) {
+					response = new ResponseEntity<Coche>(HttpStatus.OK);
+				} else {
+					response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
+				}
+			} catch (Exception e) {
+				response = new ResponseEntity<Coche>(HttpStatus.CONFLICT);
 			}
 		}
 		return response;
@@ -65,7 +75,7 @@ public class VehiculoController {
 				c.setModelo(coche.getModelo());
 				c.setKm(coche.getKm());
 				if (cocheDAO.update(c)) {
-					response = new ResponseEntity<Coche>(c,HttpStatus.OK);
+					response = new ResponseEntity<Coche>(c, HttpStatus.OK);
 				}
 			}
 		}
@@ -77,7 +87,7 @@ public class VehiculoController {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		if (id > 0) {
 			if (cocheDAO.update(coche)) {
-				response = new ResponseEntity<Coche>(coche,HttpStatus.OK);
+				response = new ResponseEntity<Coche>(coche, HttpStatus.OK);
 			}
 		}
 		return response;
@@ -86,9 +96,9 @@ public class VehiculoController {
 	@RequestMapping(value = { "/api/vehiculo" }, method = RequestMethod.POST)
 	public void crear(@RequestBody Coche coche) throws SQLException {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.I_AM_A_TEAPOT);
-		Coche c =cocheDAO.insert(coche);
-		if (c!=null) {
-			response = new ResponseEntity<Coche>(c,HttpStatus.OK);
+		Coche c = cocheDAO.insert(coche);
+		if (c != null) {
+			response = new ResponseEntity<Coche>(c, HttpStatus.OK);
 		}
 	}
 }
