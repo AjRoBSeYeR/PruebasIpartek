@@ -35,7 +35,7 @@ public class VehiculoController {
 	public ResponseEntity<Coche> detalle(@PathVariable String id) {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		try {
-			int idint=Integer.parseInt(id);
+			int idint = Integer.parseInt(id);
 			if (idint > 0) {
 				Coche c = cocheDAO.getById(idint);
 				if (c != null) {
@@ -44,40 +44,54 @@ public class VehiculoController {
 			}
 		} catch (Exception e) {
 			response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
-		
+
 		}
 		return response;
 	}
 
 	@RequestMapping(value = { "/api/vehiculo/{id}" }, method = RequestMethod.DELETE)
-	public ResponseEntity<Coche> eliminar(@PathVariable long id) throws SQLException {
+	public ResponseEntity<Coche> eliminar(@PathVariable String id) throws SQLException {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
-		if (id > 0) {
-			try {
-				if (cocheDAO.delete(id)) {
-					response = new ResponseEntity<Coche>(HttpStatus.OK);
-				} else {
-					response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
+		try {
+			int idint = Integer.parseInt(id);
+			if (idint > 0) {
+				try {
+					if (cocheDAO.delete(idint)) {
+						response = new ResponseEntity<Coche>(HttpStatus.OK);
+					} else {
+						response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
+					}
+				} catch (Exception e) {
+					response = new ResponseEntity<Coche>(HttpStatus.CONFLICT);
 				}
-			} catch (Exception e) {
-				response = new ResponseEntity<Coche>(HttpStatus.CONFLICT);
 			}
+		} catch (Exception e) {
+			response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		}
 		return response;
 	}
 
 	@RequestMapping(value = { "/api/vehiculo/{id}" }, method = RequestMethod.PATCH)
-	public ResponseEntity<Coche> darDeBaja(@PathVariable long id, @RequestBody Coche coche) throws SQLException {
+	public ResponseEntity<Coche> darDeBaja(@PathVariable String id, @RequestBody Coche coche) throws SQLException {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
-		if (id > 0) {
-			Coche c = cocheDAO.getById(id);
-			if (c != null) {
-				c.setModelo(coche.getModelo());
-				c.setKm(coche.getKm());
-				if (cocheDAO.update(c)) {
-					response = new ResponseEntity<Coche>(c, HttpStatus.OK);
+		try {
+			int idint = Integer.parseInt(id);
+			if (idint > 0) {
+				Coche c = cocheDAO.getById(idint);
+				if (c != null) {
+					c.setModelo(coche.getModelo());
+					c.setKm(coche.getKm());
+					try {
+						if (cocheDAO.update(c)) {
+							response = new ResponseEntity<Coche>(c, HttpStatus.OK);
+						}
+					} catch (Exception e) {
+						response = new ResponseEntity<Coche>(HttpStatus.CONFLICT);
+					}
 				}
 			}
+		} catch (Exception e) {
+			response = new ResponseEntity<Coche>(HttpStatus.BAD_REQUEST);
 		}
 		return response;
 	}
