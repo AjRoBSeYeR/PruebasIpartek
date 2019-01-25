@@ -12,16 +12,17 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.modelo.cm.ConnectionManager;
 import com.ipartek.formacion.modelo.pojo.Coche;
-import com.ipartek.formacion.modelo.pojo.Multa;
-
 
 public class CocheDAO {
 
 	private final static Logger LOG = Logger.getLogger(CocheDAO.class);
 	private static CocheDAO INSTANCE = null;
-	private static final String SQL_INSERT = "{call pa_coche_insert(?,?,?)}";
-	
+	private static final String SQL_INSERT = "{call pa_coche_insert(?,?,?,?)}";
+	private static final String SQL_GETALL = "SELECT * FROM coche ORDER BY id DESC LIMIT 100";
 	private static final String SQL_GETMATRICULA = "{call pa_coche_getByMatricula(?)}";
+	private static final String SQL_GETBYID = "SELECT * FROM COCHE WHERE ID=?";
+	private static final String SQL_DELETEBYID = "DELETE FROM COCHE WHERE ID=?";
+	private static final String SQL_UPDATE = "{call pa_coche_update(?,?,?)}";
 
 	// constructor privado, solo acceso por getInstance()
 	private CocheDAO() {
@@ -44,6 +45,24 @@ public class CocheDAO {
 		c.setKm(rs.getInt("km"));
 		return c;
 	}
+	
+	public boolean update(Coche c) throws SQLException {
+
+		boolean resul = false;
+		try (Connection conn = ConnectionManager.getConnection();
+				CallableStatement cs = conn.prepareCall(SQL_UPDATE);) {
+
+			cs.setString(1, c.getModelo());
+			cs.setInt(2, c.getKm());
+			cs.setLong(3, c.getId());
+			int affectedRows = cs.executeUpdate();
+			if (affectedRows == 1) {
+				resul = true;
+			}
+		}
+		return resul;
+
+	}
 
 	public Coche getByMatricula(String mat) {
 		Coche c = null;
@@ -57,7 +76,7 @@ public class CocheDAO {
 					while (rs.next()) {
 						c = rowMapper(rs);
 					}
-				} catch (Exception e) {					
+				} catch (Exception e) {
 					LOG.warn(e);
 				}
 			}
@@ -67,14 +86,14 @@ public class CocheDAO {
 		}
 		return c;
 	}
-	
+
 	public ArrayList<Coche> getAll() {
 
 		ArrayList<Coche> coches = new ArrayList<Coche>();
-		String sql = "SELECT * FROM coche ORDER BY id DESC LIMIT 100";
+	
 
 		try (Connection conn = ConnectionManager.getConnection();
-				PreparedStatement pst = conn.prepareStatement(sql);
+				PreparedStatement pst = conn.prepareStatement(SQL_GETALL);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
@@ -96,17 +115,58 @@ public class CocheDAO {
 		}
 		return coches;
 	}
+
+	public Coche getById(long id) {
+
+		Coche c = null;
+		try (Connection conn = ConnectionManager.getConnection();
+				PreparedStatement cs = conn.prepareStatement(SQL_GETBYID);) {
+
+			cs.setLong(1, id);
+
+			try (ResultSet rs = cs.executeQuery()) {
+
+				while (rs.next()) {
+					c = rowMapper(rs);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("El agente que buscas no existe", e);
+		}
+		return c;
+	}
 	
-	public void insert(Coche c) throws SQLException {
+	public boolean delete(long id) throws SQLException {
+
+		boolean resul = false;
+		try (Connection conn = ConnectionManager.getConnection();
+				CallableStatement cs = conn.prepareCall(SQL_DELETEBYID);) {
+
+			cs.setLong(1,id);
+			int affectedRows = cs.executeUpdate();
+			if (affectedRows == 1) {
+				resul = true;
+			}
+		}
+		return resul;
+	}
+
+	public Coche insert(Coche c) throws SQLException {
 
 		try (Connection conn = ConnectionManager.getConnection();
 				CallableStatement cs = conn.prepareCall(SQL_INSERT);) {
 			cs.setString(1, c.getMatricula());
-			cs.setInt(2, c.getKm());
-			cs.setString(3, c.getModelo());
+			cs.setString(2, c.getModelo());
+			cs.setInt(3, c.getKm());
+			cs.registerOutParameter(4, Types.INTEGER);
 			int affectedRows = cs.executeUpdate();
-
+			if (affectedRows == 1) {
+				c.setId(cs.getLong(4));
+			}else {
+				c=null;
+			}
 		}
-
+		return c;
 	}
 }
