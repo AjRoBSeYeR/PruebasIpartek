@@ -15,9 +15,9 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	
-	<!-- Swagger -->
+	<!-- Swagger 
 	<resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
-    <resources mapping="/swagger-ui.html" location="classpath:/META-INF/resources/swagger-ui.html"/>
+    <resources mapping="/swagger-ui.html" location="classpath:/META-INF/resources/swagger-ui.html"/>-->
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -37,7 +37,7 @@
 	<!-- Configure bean to convert JSON to POJO and vice versa -->
 	<beans:bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 	</beans:bean>	
-	
+	<!-- escanea esto, busca sus anotaciones y genera beans e inyectarlas-->
 	<context:component-scan base-package="com.ipartek.formacion" />
 	
 </beans:beans>

@@ -2,8 +2,10 @@ package com.ipartek.formacion.modelo.daos;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -62,5 +64,34 @@ public class CocheDAO {
 			LOG.error(e);
 		}
 		return c;
+	}
+	
+	public ArrayList<Coche> getAll() {
+
+		ArrayList<Coche> coches = new ArrayList<Coche>();
+		String sql = "SELECT * FROM coche ORDER BY id DESC LIMIT 100";
+
+		try (Connection conn = ConnectionManager.getConnection();
+				PreparedStatement pst = conn.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery()) {
+
+			while (rs.next()) {
+				try {
+					Coche coche = new Coche();
+					coche.setId(rs.getLong("id"));
+					coche.setMatricula(rs.getString("matricula"));
+					coche.setKm(rs.getInt("km"));
+					coche.setModelo(rs.getString("modelo"));
+					coches.add(coche);
+				} catch (Exception e) {
+					System.out.println("usuario no valido");
+					e.printStackTrace();
+				}
+			} // while
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return coches;
 	}
 }
