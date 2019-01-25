@@ -5,19 +5,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.modelo.cm.ConnectionManager;
 import com.ipartek.formacion.modelo.pojo.Coche;
+import com.ipartek.formacion.modelo.pojo.Multa;
 
 
 public class CocheDAO {
 
 	private final static Logger LOG = Logger.getLogger(CocheDAO.class);
 	private static CocheDAO INSTANCE = null;
-	
+	private static final String SQL_INSERT = "{call pa_coche_insert(?,?,?)}";
 	
 	private static final String SQL_GETMATRICULA = "{call pa_coche_getByMatricula(?)}";
 
@@ -93,5 +95,18 @@ public class CocheDAO {
 			e.printStackTrace();
 		}
 		return coches;
+	}
+	
+	public void insert(Coche c) throws SQLException {
+
+		try (Connection conn = ConnectionManager.getConnection();
+				CallableStatement cs = conn.prepareCall(SQL_INSERT);) {
+			cs.setString(1, c.getMatricula());
+			cs.setInt(2, c.getKm());
+			cs.setString(3, c.getModelo());
+			int affectedRows = cs.executeUpdate();
+
+		}
+
 	}
 }

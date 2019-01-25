@@ -23,7 +23,15 @@ public class VehiculoController {
 	@RequestMapping(value = { "/api/vehiculo" }, method = RequestMethod.GET)
 	public ArrayList<Coche> listar() {
 
-
 		return cocheDAO.getAll();
+	}
+	
+	@RequestMapping(value = { "/api/vehiculo" }, method = RequestMethod.POST)
+	public void insertar() {
+		Coche c= new Coche();
+		c.setMatricula("FFF5555");
+		c.setModelo("coche palo");
+		c.setKm(90);
+		cocheDAO.insert(c);
 	}
 }
