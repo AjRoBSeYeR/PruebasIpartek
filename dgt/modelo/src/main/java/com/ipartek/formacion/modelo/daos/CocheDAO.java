@@ -45,7 +45,7 @@ public class CocheDAO {
 		c.setKm(rs.getInt("km"));
 		return c;
 	}
-	
+
 	public boolean update(Coche c) throws SQLException {
 
 		boolean resul = false;
@@ -63,6 +63,12 @@ public class CocheDAO {
 		return resul;
 
 	}
+
+	/**
+	 * 
+	 * @param mat
+	 * @return
+	 */
 
 	public Coche getByMatricula(String mat) {
 		Coche c = null;
@@ -90,7 +96,6 @@ public class CocheDAO {
 	public ArrayList<Coche> getAll() {
 
 		ArrayList<Coche> coches = new ArrayList<Coche>();
-	
 
 		try (Connection conn = ConnectionManager.getConnection();
 				PreparedStatement pst = conn.prepareStatement(SQL_GETALL);
@@ -136,14 +141,14 @@ public class CocheDAO {
 		}
 		return c;
 	}
-	
+
 	public boolean delete(long id) throws SQLException {
 
 		boolean resul = false;
 		try (Connection conn = ConnectionManager.getConnection();
 				CallableStatement cs = conn.prepareCall(SQL_DELETEBYID);) {
 
-			cs.setLong(1,id);
+			cs.setLong(1, id);
 			int affectedRows = cs.executeUpdate();
 			if (affectedRows == 1) {
 				resul = true;
@@ -163,8 +168,8 @@ public class CocheDAO {
 			int affectedRows = cs.executeUpdate();
 			if (affectedRows == 1) {
 				c.setId(cs.getLong(4));
-			}else {
-				c=null;
+			} else {
+				c = null;
 			}
 		}
 		return c;

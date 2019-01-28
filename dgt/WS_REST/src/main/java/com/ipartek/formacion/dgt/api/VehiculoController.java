@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ipartek.formacion.modelo.daos.CocheDAO;
 import com.ipartek.formacion.modelo.pojo.Coche;
 
-
 @CrossOrigin
 @RestController
+/*
+ * @RequestMapping ("/api/vehiculo") /* para no repetir esta URI en los demas
+ * request
+ */
 public class VehiculoController {
 	private static CocheDAO cocheDAO;
 	private final static Logger LOG = Logger.getLogger(VehiculoController.class);
@@ -39,15 +42,12 @@ public class VehiculoController {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		try {
 			int idint = Integer.parseInt(id);
-			if (idint > 0) {
-				Coche c = cocheDAO.getById(idint);
-				if (c != null) {
-					response = new ResponseEntity<Coche>(c, HttpStatus.OK);
-				}
+			Coche c = cocheDAO.getById(idint);
+			if (c != null) {
+				response = new ResponseEntity<Coche>(c, HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
-
 		}
 		return response;
 	}
@@ -79,33 +79,37 @@ public class VehiculoController {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		try {
 			int idint = Integer.parseInt(id);
-			if (idint > 0) {
-				Coche c = cocheDAO.getById(idint);
-				if (c != null) {
-					c.setModelo(coche.getModelo());
-					c.setKm(coche.getKm());
-					try {
-						if (cocheDAO.update(c)) {
-							response = new ResponseEntity<Coche>(c, HttpStatus.OK);
-						}
-					} catch (Exception e) {
-						response = new ResponseEntity<Coche>(HttpStatus.CONFLICT);
-					}
+			Coche c = cocheDAO.getById(idint);
+			if (c != null) {
+				c.setModelo(coche.getModelo());
+				c.setKm(coche.getKm());
+				if (cocheDAO.update(c)) {
+					response = new ResponseEntity<Coche>(c, HttpStatus.OK);
 				}
 			}
+		} catch (SQLException e) {
+			LOG.debug("no se ha podido actualizar los datos");
+			response = new ResponseEntity<Coche>(HttpStatus.CONFLICT);
 		} catch (Exception e) {
+			LOG.error(e);
 			response = new ResponseEntity<Coche>(HttpStatus.BAD_REQUEST);
 		}
 		return response;
 	}
 
 	@RequestMapping(value = { "/api/vehiculo/{id}" }, method = RequestMethod.PUT)
-	public ResponseEntity<Coche> modificar(@RequestBody Coche coche, @PathVariable long id) throws SQLException {
+	public ResponseEntity<Coche> modificar(@RequestBody Coche coche, @PathVariable String id) throws SQLException {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
-		if (id > 0) {
+		try {
 			if (cocheDAO.update(coche)) {
 				response = new ResponseEntity<Coche>(coche, HttpStatus.OK);
 			}
+		} catch (SQLException e) {
+			LOG.debug("No se ha podido actualizar los datos");
+			response = new ResponseEntity<Coche>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			LOG.error(e);
+			response = new ResponseEntity<Coche>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
 	}
