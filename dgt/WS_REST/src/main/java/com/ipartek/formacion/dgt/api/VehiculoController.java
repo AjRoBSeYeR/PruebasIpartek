@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.jboss.logging.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ipartek.formacion.modelo.daos.CocheDAO;
 import com.ipartek.formacion.modelo.pojo.Coche;
+
+import io.swagger.annotations.Api;
 
 @CrossOrigin
 @RestController
@@ -22,6 +26,7 @@ import com.ipartek.formacion.modelo.pojo.Coche;
  * @RequestMapping ("/api/vehiculo") /* para no repetir esta URI en los demas
  * request
  */
+@Api(tags = { "VEHICULO" }, produces = "application/json", description="Gestión de Vehiculos")
 public class VehiculoController {
 	private static CocheDAO cocheDAO;
 	private final static Logger LOG = Logger.getLogger(VehiculoController.class);
@@ -32,9 +37,11 @@ public class VehiculoController {
 	}
 
 	@RequestMapping(value = { "/api/vehiculo" }, method = RequestMethod.GET)
-	public ArrayList<Coche> listar() {
+	public ArrayList<Coche> listar(@RequestParam String baja) {
+		
+		return cocheDAO.getAll(baja);
 
-		return cocheDAO.getAll();
+		
 	}
 
 	@RequestMapping(value = { "/api/vehiculo/{id}" }, method = RequestMethod.GET)
@@ -81,9 +88,8 @@ public class VehiculoController {
 			int idint = Integer.parseInt(id);
 			Coche c = cocheDAO.getById(idint);
 			if (c != null) {
-				c.setModelo(coche.getModelo());
-				c.setKm(coche.getKm());
-				if (cocheDAO.update(c)) {
+				c.setFechabaja(coche.getFechabaja());
+				if (cocheDAO.update(c,"PATCH")) {
 					response = new ResponseEntity<Coche>(c, HttpStatus.OK);
 				}
 			}
@@ -101,7 +107,7 @@ public class VehiculoController {
 	public ResponseEntity<Coche> modificar(@RequestBody Coche coche, @PathVariable String id) throws SQLException {
 		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		try {
-			if (cocheDAO.update(coche)) {
+			if (cocheDAO.update(coche,"PUT")) {
 				response = new ResponseEntity<Coche>(coche, HttpStatus.OK);
 			}
 		} catch (SQLException e) {
@@ -115,11 +121,12 @@ public class VehiculoController {
 	}
 
 	@RequestMapping(value = { "/api/vehiculo" }, method = RequestMethod.POST)
-	public void crear(@RequestBody Coche coche) throws SQLException {
-		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.I_AM_A_TEAPOT);
+	public  ResponseEntity<Coche> crear(@RequestBody Coche coche) throws SQLException {
+		ResponseEntity<Coche> response = new ResponseEntity<Coche>(HttpStatus.NOT_FOUND);
 		Coche c = cocheDAO.insert(coche);
 		if (c != null) {
-			response = new ResponseEntity<Coche>(c, HttpStatus.OK);
+			response = new ResponseEntity<Coche>(c, HttpStatus.CREATED);
 		}
+		return response;
 	}
 }

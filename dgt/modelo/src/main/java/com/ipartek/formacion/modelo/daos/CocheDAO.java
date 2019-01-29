@@ -18,11 +18,12 @@ public class CocheDAO {
 	private final static Logger LOG = Logger.getLogger(CocheDAO.class);
 	private static CocheDAO INSTANCE = null;
 	private static final String SQL_INSERT = "{call pa_coche_insert(?,?,?,?)}";
-	private static final String SQL_GETALL = "SELECT * FROM coche ORDER BY id DESC LIMIT 100";
+	private static final String SQL_GETALL = "SELECT * FROM coche WHERE fecha_baja IS NULL ORDER BY id DESC LIMIT 100";
+	private static final String SQL_GETALLBAJA = "SELECT * FROM coche WHERE fecha_baja IS NOT NULL ORDER BY id DESC LIMIT 100";
 	private static final String SQL_GETMATRICULA = "{call pa_coche_getByMatricula(?)}";
 	private static final String SQL_GETBYID = "SELECT * FROM COCHE WHERE ID=?";
 	private static final String SQL_DELETEBYID = "DELETE FROM COCHE WHERE ID=?";
-	private static final String SQL_UPDATE = "{call pa_coche_update(?,?,?)}";
+	private static final String SQL_UPDATE = "{call pa_coche_update(?,?,?,?,?,?)}";
 
 	// constructor privado, solo acceso por getInstance()
 	private CocheDAO() {
@@ -46,15 +47,18 @@ public class CocheDAO {
 		return c;
 	}
 
-	public boolean update(Coche c) throws SQLException {
+	public boolean update(Coche c, String opcion) throws SQLException {
 
 		boolean resul = false;
 		try (Connection conn = ConnectionManager.getConnection();
 				CallableStatement cs = conn.prepareCall(SQL_UPDATE);) {
 
-			cs.setString(1, c.getModelo());
-			cs.setInt(2, c.getKm());
-			cs.setLong(3, c.getId());
+			cs.setString(1, opcion);
+			cs.setString(2, c.getMatricula());
+			cs.setString(3, c.getModelo());
+			cs.setInt(4, c.getKm());
+			cs.setLong(5, c.getId());
+			cs.setString(6, c.getFechabaja());
 			int affectedRows = cs.executeUpdate();
 			if (affectedRows == 1) {
 				resul = true;
@@ -93,12 +97,18 @@ public class CocheDAO {
 		return c;
 	}
 
-	public ArrayList<Coche> getAll() {
+	public ArrayList<Coche> getAll(String baja) {
 
 		ArrayList<Coche> coches = new ArrayList<Coche>();
-
+		String vista;
+		if("true".equals(baja)){
+			vista=SQL_GETALL;
+		}else {
+			vista=SQL_GETALLBAJA;
+		}
 		try (Connection conn = ConnectionManager.getConnection();
-				PreparedStatement pst = conn.prepareStatement(SQL_GETALL);
+			
+				PreparedStatement pst = conn.prepareStatement(vista);
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {

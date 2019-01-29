@@ -1,35 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Cliente JavaScript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="css/custom.css">
+
+
+    <title>DGT JA Client</title>
   </head>
+
   <body>
 
-	<main class="container">
-		<h1>Listado de Vehiculos</h1>
-		
-		<ul class="list-group" id="ulVehiculos">
-          <li class="list-group-item">Cargando datos....</li>          
-        </ul>
-		
-	</main>	
-		
-    <script src="js/main.js"></script>		
-		
-	</body>
-</html>			
+      
+
+
+
+
+
+
+    
+    <main class="container">
+      <div id="alert"></div> 
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" href="#vehiculosactivos" role="tab" data-toggle="tab">Activos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#buzz" role="tab" data-toggle="tab">Bajas</a>
+            </li>
+          </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane fade in active" id="vehiculosactivos">
+              <div class="row">
+                  <div class="col-8">
+                    <h2>Listado vehiculos activos</h2>
+                    <ul id="ulVehiculo" class="list-group">
+                      
+                      </ul>
+                  </div>
+                  <div class="col-4">
+                      <h2>Formulario</h2>
+                      <div class="form-group">
+                          <input id="id" type="hidden">
+                          <input class="form-control" id="matricula" type="text" placeholder="BI000KM entre 6 y 10 caracteres"><br>
+                          <input class="form-control" id="modelo" type="text" placeholder="Ford focus"><br>
+                          <input class="form-control" id="Km" type="number" placeholder="62"><br>
+                          <button id="btncrear" class=" mb-3 form-control btn btn-success" onclick="crear()">Crear</button>
+                          <button id="btneditar"class="form-control btn btn-info" onclick="editar()">Modificar</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="buzz">
+              <div class="row">
+                  <div class="col-6">
+                    <h2>Listado vehiculos dados de baja</h2>
+                    <ul id="ulVehiculoBaja" class="list-group">
+                      
+                    </ul>
+                  </div>
+              </div> 
+          </div>
+        </div>
+    </main>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <script src="js/main.js"></script>
+
+  </body>
+</html>

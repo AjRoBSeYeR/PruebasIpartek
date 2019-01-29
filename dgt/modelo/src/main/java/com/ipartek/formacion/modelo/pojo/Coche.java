@@ -5,13 +5,23 @@ public class Coche {
 	private String matricula;
 	private String modelo;
 	private Integer km;
+	private String fechabaja;
 	
-	public Coche(Long id, String matricula, String modelo, Integer km) {
+	public Coche(Long id, String matricula, String modelo, Integer km, String fechabaja) {
 		this();
 		setId(id);
 		setMatricula(matricula);
 		setModelo(modelo);
 		setKm(km);
+		setFechabaja(fechabaja);
+	}
+
+	public String getFechabaja() {
+		return fechabaja;
+	}
+
+	public void setFechabaja(String fechabaja) {
+		this.fechabaja = fechabaja;
 	}
 
 	public Coche() {
@@ -20,6 +30,7 @@ public class Coche {
 		this.matricula="";
 		this.modelo="";
 		this.km=0;
+		this.fechabaja=null;
 	}
 
 	public Long getId() {
@@ -56,8 +67,11 @@ public class Coche {
 
 	@Override
 	public String toString() {
-		return "Coche [id=" + id + ", matricula=" + matricula + ", modelo=" + modelo + ", km=" + km + "]";
+		return "Coche [id=" + id + ", matricula=" + matricula + ", modelo=" + modelo + ", km=" + km + ", fechabaja="
+				+ fechabaja + "]";
 	}
+
+	
 	
 	
 

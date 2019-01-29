@@ -59,7 +59,7 @@
 			<version>${springframework.version}</version>
 		</dependency>
 
-		<!-- Loggero trazas -->
+		<!-- Logger trazas -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
