@@ -1,6 +1,7 @@
 
 //variables globales
 var ulVehiculos;
+var ulVehiculosBaja;
 var vehiculos = [];
 var vehiculoSeleccionado;
 
@@ -8,7 +9,9 @@ window.addEventListener('load', function(){
 
     console.info('documento cargado y listo');    
     ulVehiculos = document.getElementById('ulVehiculo');
+    ulVehiculosBaja = document.getElementById('ulVehiculoBaja');
     refrescarLista();
+    refrescarListaBajas();
 
 });
 
@@ -29,14 +32,14 @@ function refrescarLista(){
                 <span class="modelo">${vehiculo.modelo}</span>
                 <span class="km"> ${vehiculo.km} KM</span>
                 <a class="mr-3 btn btn-outline-danger" onclick="eliminar(${vehiculo.id})">Eliminar</a>
-                <a class="mr-3 btn btn-outline-danger" onclick="baja(${vehiculo.id})">Dar de baja</a>
+                <a class="mr-3 btn btn-outline-danger" onclick="bajaorecuperar(${vehiculo.id},"baja")">Dar de baja</a>
                 <a class="mr-3 btn btn-outline-info" onclick="cargarDatos(${vehiculo.id})">Editar</a>
             </li>`;
             });
             ulVehiculos.innerHTML=lis;
         }    
    };
-   xhr.open('GET', 'http://localhost:8080/wsrest/api/vehiculo/'?baja:false);
+   xhr.open('GET', 'http://localhost:8080/wsrest/api/vehiculo/?baja=false');
    xhr.send( );
 } // refrescarLista
 
@@ -54,13 +57,13 @@ function refrescarListaBajas(){
                 <span class="matricula">${vehiculo.matricula}</span> 
                 <span class="modelo">${vehiculo.modelo}</span>
                 <span class="km"> ${vehiculo.km} KM</span>
-                <a class="mr-3 btn btn-outline-success" onclick="eliminar(${vehiculo.id})">Restaurar</a>
+                <a class="mr-3 btn btn-outline-success" onclick="bajaorecuperar(${vehiculo.id},"recuperar")">Restaurar</a>
             </li>`;
             });
             ulVehiculosBaja.innerHTML=lis;
         }    
    };
-   xhr.open('GET', 'http://localhost:8080/wsrest/api/vehiculo/'?baja:true);
+   xhr.open('GET', 'http://localhost:8080/wsrest/api/vehiculo/?baja=true');
    xhr.send( );
 } // refrescarLista
 
@@ -170,10 +173,16 @@ function editar(){
 
 }
 
-function baja(id){
-    let jsonCoche = {
-        "fechabaja":new Date()
-    };
+function bajaorecuperar(id,opcion){
+    if (opcion=="baja"){
+        let jsonCoche = {
+            "fechabaja":new Date()
+        };
+    }else{
+        let jsonCoche = {
+            "fechabaja":null
+        };
+    }
    let xhr = new XMLHttpRequest();    
    xhr.onreadystatechange = function(){ 
         if (xhr.readyState == 4){   
@@ -185,12 +194,14 @@ function baja(id){
                 showAlert("exiten errores en los datos","danger"); 
             }
             refrescarLista();
+            refrescarListaBajas();
         }    
    };
    xhr.open('PATCH', 'http://localhost:8080/wsrest/api/vehiculo/'+id);
    xhr.setRequestHeader("Content-type", "application/json");
    xhr.send( JSON.stringify(jsonCoche) );
 }
+
 
 function showAlert( texto, tipo = 'info' ){
 

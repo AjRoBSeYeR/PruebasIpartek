@@ -102,9 +102,9 @@ public class CocheDAO {
 		ArrayList<Coche> coches = new ArrayList<Coche>();
 		String vista;
 		if("true".equals(baja)){
-			vista=SQL_GETALL;
-		}else {
 			vista=SQL_GETALLBAJA;
+		}else {
+			vista=SQL_GETALL;
 		}
 		try (Connection conn = ConnectionManager.getConnection();
 			
