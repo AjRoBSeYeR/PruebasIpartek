@@ -24,11 +24,17 @@
 	</properties>
 
 	<dependencies>
-		<!-- modelo -->
-		<dependency>
+	
+			<dependency>
 			<groupId>com.ipartek.formacion.dgt</groupId>
 			<artifactId>modelo</artifactId>
-			<version>1.0</version>
+			<version>1.0</version>			
+		</dependency>
+		<!-- modelo -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.47</version>
 		</dependency>
 
 
