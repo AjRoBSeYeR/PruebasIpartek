@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,6 +77,45 @@ public class CombustibleController {
 		} catch (Exception e) {
 			Mensaje mensaje = new Mensaje(e.getMessage());
 			response = new ResponseEntity<Mensaje>(mensaje, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return response;
+	}
+	
+	@RequestMapping(value = { "/" }, method = RequestMethod.POST)
+	public ResponseEntity<Combustible> insert(@RequestBody Combustible combustible) {
+		ResponseEntity<Combustible> response = new ResponseEntity<Combustible>(HttpStatus.NOT_FOUND);
+		try {
+			if (combustibleService.crear(combustible)) {
+				response = new ResponseEntity<Combustible>(combustible,HttpStatus.OK);
+			}
+
+		} catch (CombustibleException e) {
+
+			response = new ResponseEntity<Combustible>( HttpStatus.CONFLICT);
+		} catch (Exception e) {
+		
+			response = new ResponseEntity<Combustible>( HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return response;
+	}
+	
+	@RequestMapping(value = { "/{id}" }, method = RequestMethod.PUT)
+	public ResponseEntity<Combustible> update(@PathVariable int id, @RequestBody Combustible combustible) {
+		ResponseEntity<Combustible> response = new ResponseEntity<Combustible>(HttpStatus.NOT_FOUND);
+		try {
+			combustible.setId(id);
+			if (combustibleService.modificar(combustible)) {
+				response = new ResponseEntity<Combustible>(combustible,HttpStatus.OK);
+			}
+
+		} catch (CombustibleException e) {
+
+			response = new ResponseEntity<Combustible>( HttpStatus.CONFLICT);
+		} catch (Exception e) {
+		
+			response = new ResponseEntity<Combustible>( HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		return response;

@@ -45,7 +45,7 @@ public interface CombustibleService {
 	 * @throws CombustibleException si no existe
 	 */
 	
-	boolean modificar (int idCombustible) throws CombustibleException;
+	boolean modificar (Combustible Combustible) throws CombustibleException;
 	
 
 	
