@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
-import com.ipartek.formacion.modelo.cm.ConnectionManager;
+import com.ipartek.formacion.taller.modelo.config.ConnectionManager;
 import com.ipartek.formacion.taller.modelo.pojo.Vehiculo;
 import com.mysql.jdbc.Connection;
 

@@ -51,7 +51,7 @@ public class PersonaController {
 			vehiculos.add(vehiculo);
 			response = new ResponseEntity<ArrayList<Vehiculo>>(vehiculos, HttpStatus.OK);
 		} catch (Exception e) {
-			response = new ResponseEntity<ArrayList<Vehiculo>>(vehiculos, HttpStatus.CONFLICT);
+			response = new ResponseEntity<ArrayList<Vehiculo>>(vehiculos, HttpStatus.BAD_REQUEST);
 		}
 		return response;
 

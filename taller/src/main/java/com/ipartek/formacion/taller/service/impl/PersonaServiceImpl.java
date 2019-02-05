@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ipartek.formacion.taller.modelo.dao.PersonaDAO;
 import com.ipartek.formacion.taller.modelo.pojo.Persona;
+import com.ipartek.formacion.taller.modelo.pojo.Vehiculo;
 import com.ipartek.formacion.taller.service.PersonaService;
 
 
@@ -25,7 +26,7 @@ public class PersonaServiceImpl implements PersonaService {
 	}
 
 	@Override
-	public ArrayList<Object> vehiculos(int idPersona) {
+	public ArrayList<Vehiculo> vehiculos(int idPersona) {
 		
 		return null;
 	}

@@ -25,12 +25,13 @@
 
 	<dependencies>
 	
-			<dependency>
+			<!-- <dependency>
 			<groupId>com.ipartek.formacion.dgt</groupId>
 			<artifactId>modelo</artifactId>
 			<version>1.0</version>			
-		</dependency>
+		</dependency>	-->
 		<!-- modelo -->
+	
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
