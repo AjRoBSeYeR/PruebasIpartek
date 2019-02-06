@@ -87,10 +87,12 @@ public class RolDAO implements IDAO<Rol> {
 			pst.setString(1, rol.getNombre());
 
 			if (pst.executeUpdate() == 1) {
-				ResultSet idGenerado = pst.getGeneratedKeys();
-				idGenerado.next();
-				rol.setId((int) idGenerado.getLong(1));
-				creado = true;
+				try (ResultSet idGenerado = pst.getGeneratedKeys();) {
+					idGenerado.next();
+					rol.setId((int) idGenerado.getLong(1));
+					creado = true;
+				} 
+
 			}
 
 		}
