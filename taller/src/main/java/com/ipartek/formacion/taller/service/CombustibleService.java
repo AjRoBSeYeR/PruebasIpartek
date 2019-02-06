@@ -1,6 +1,5 @@
 package com.ipartek.formacion.taller.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.taller.modelo.pojo.Combustible;
