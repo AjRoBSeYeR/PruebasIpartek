@@ -29,11 +29,11 @@ public class SwaggerConfig {
     }
      
     private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo("DGT Rest API",
+        ApiInfo apiInfo = new ApiInfo("Taller Rest API",
                                         "",
-                                        "1.0",
+                                        "13.0",
                                         "",
-                                        new Contact("Ander Uraga Real", "https://github.com/ipartek/java_2018_0508/tree/master/youtube", "auraga@ipartek.com"),
+                                        new Contact("Borja Reyes Diez", "https://www.yatiqueteimporta.com", "puturru@defua.com"),
                                         "Apache License",
                                         "");
         return apiInfo;

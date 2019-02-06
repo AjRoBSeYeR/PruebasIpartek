@@ -1,10 +1,22 @@
 package com.ipartek.formacion.taller.modelo.pojo;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class Persona {
 	private int id;
+	@NotEmpty
+	@Size(min=1,max=45)
 	private String nombre;
+	@NotEmpty
+	@Size(min=1,max=45)
 	private String apellidos;
+	@NotEmpty
+	@Size(min=9,max=10)
 	private String dni;
+	@NotEmpty
+	@Size(min=10,max=15)
 	private String telefono;
 	//private ArrayList<Rol> roles;
 

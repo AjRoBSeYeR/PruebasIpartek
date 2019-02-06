@@ -7,6 +7,6 @@ public class PersonaException extends Exception {
 	}
 	private static final long serialVersionUID = 1L;
 	public static final String EXCEPTION_EXISTS = "La Persona ya existe";
-	public static final String EXCEPTION_COSTRAINT = "No se sepuede eliminar ya que esta persona tiene roles asociados";
+	public static final String EXCEPTION_COSTRAINT = "No se sepuede eliminar ya que esta persona esta asiciada a algun rol";
 
 }
