@@ -9,65 +9,65 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Repository;
 
 import com.ipartek.formacion.taller.modelo.config.ConnectionManager;
-import com.ipartek.formacion.taller.modelo.pojo.Combustible;
+import com.ipartek.formacion.taller.modelo.pojo.Rol;
 import com.mysql.jdbc.Connection;
 
 @Repository
-public class CombustibleDAO implements IDAO<Combustible> {
-	private static final String SQL_GET_ALL = "SELECT id ,nombre FROM combustible  ORDER BY id DESC LIMIT 1000;";
-	private static final String SQL_GET_BY_ID = "SELECT id ,nombre FROM combustible WHERE id=?;";
-	private static final String SQL_DELETE = "DELETE FROM combustible WHERE id=?;";
-	private static final String SQL_INSERT = "INSERT INTO combustible (nombre) VALUES (?);";
-	private static final String SQL_UPDATE = "UPDATE combustible SET nombre=? WHERE id=?;";
+public class RolDAO implements IDAO<Rol> {
+	private static final String SQL_GET_ALL = "SELECT id ,nombre FROM rol  ORDER BY id DESC LIMIT 1000;";
+	private static final String SQL_GET_BY_ID = "SELECT id ,nombre FROM rol WHERE id=?;";
+	private static final String SQL_DELETE = "DELETE FROM rol WHERE id=?;";
+	private static final String SQL_INSERT = "INSERT INTO rol (nombre) VALUES (?);";
+	private static final String SQL_UPDATE = "UPDATE rol SET nombre=? WHERE id=?;";
 
 	@Override
-	public ArrayList<Combustible> getAll() {
-		ArrayList<Combustible> combustibles = new ArrayList<Combustible>();
+	public ArrayList<Rol> getAll() {
+		ArrayList<Rol> roles = new ArrayList<Rol>();
 
 		try (Connection con = (Connection) ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery();) {
 			while (rs.next()) {
-				combustibles.add(RowMapper(rs));
+				roles.add(RowMapper(rs));
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return combustibles;
+		return roles;
 	}
 
 	@Override
-	public Combustible getById(int idCombustible) {
-		Combustible combustible = null;
+	public Rol getById(int idRol) {
+		Rol rol = null;
 
 		try (Connection con = (Connection) ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID);) {
 
-			pst.setInt(1, idCombustible);
+			pst.setInt(1, idRol);
 
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				combustible = RowMapper(rs);
+				rol = RowMapper(rs);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return combustible;
+		return rol;
 	}
-	
+
 	@Override
-	public boolean delete(int idCombustible) throws SQLException {
+	public boolean delete(int idRol) throws SQLException {
 		boolean eliminado = false;
 
 		try (Connection con = (Connection) ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
 
-			pst.setInt(1, idCombustible);
+			pst.setInt(1, idRol);
 
 			if (pst.executeUpdate() == 1) {
 				eliminado = true;
@@ -77,51 +77,49 @@ public class CombustibleDAO implements IDAO<Combustible> {
 		return eliminado;
 	}
 
-	
 	@Override
-	public boolean insert(Combustible combustible) throws SQLException {
+	public boolean insert(Rol rol) throws SQLException {
 
 		boolean creado = false;
 		try (Connection con = (Connection) ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
 
-			pst.setString(1, combustible.getNombre());
+			pst.setString(1, rol.getNombre());
 
 			if (pst.executeUpdate() == 1) {
 				ResultSet idGenerado = pst.getGeneratedKeys();
 				idGenerado.next();
-				combustible.setId((int) idGenerado.getLong(1));
+				rol.setId((int) idGenerado.getLong(1));
 				creado = true;
 			}
 
 		}
 		return creado;
 	}
-	
-	
+
 	@Override
-	public boolean modificar(Combustible combustible) throws SQLException {
+	public boolean modificar(Rol rol) throws SQLException {
 
 		boolean modificado = false;
 		try (Connection con = (Connection) ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_UPDATE);) {
 
-			pst.setString(1, combustible.getNombre());
-			pst.setInt(2, combustible.getId());
+			pst.setString(1, rol.getNombre());
+			pst.setInt(2, rol.getId());
 
 			if (pst.executeUpdate() == 1) {
-				modificado=true;
+				modificado = true;
 			}
 
 		}
 		return modificado;
 	}
 
-	private Combustible RowMapper(ResultSet rs) throws SQLException {
-		Combustible combustible = new Combustible();
-		combustible.setId(rs.getInt("id"));
-		combustible.setNombre(rs.getString("nombre"));
-		return combustible;
+	private Rol RowMapper(ResultSet rs) throws SQLException {
+		Rol rol = new Rol();
+		rol.setId(rs.getInt("id"));
+		rol.setNombre(rs.getString("nombre"));
+		return rol;
 	}
 
 }
