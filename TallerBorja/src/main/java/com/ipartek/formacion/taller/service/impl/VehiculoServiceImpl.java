@@ -19,6 +19,7 @@ import com.ipartek.formacion.taller.modelo.pojo.Vehiculo;
 import com.ipartek.formacion.taller.modelo.pojo.validactions.VehiculosPostCheck;
 import com.ipartek.formacion.taller.service.VehiculoService;
 import com.ipartek.formacion.taller.service.exception.VehiculoException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 @Service
 public class VehiculoServiceImpl implements VehiculoService {
@@ -78,9 +79,12 @@ public class VehiculoServiceImpl implements VehiculoService {
 			} else {
 				throw new VehiculoException(VehiculoException.EXCEPTION_VIOLATIONS);
 			}
-
 		} catch (SQLException e) {
-			throw new VehiculoException(VehiculoException.EXCEPTION_CONSTRAINT);
+			if (e.getErrorCode() == 1452) {
+				throw new VehiculoException(VehiculoException.EXCEPTION_FK_CONSTRAINT);
+			} else {
+				throw new VehiculoException(VehiculoException.EXCEPTION_CONSTRAINT);
+			}
 		} catch (Exception e) {
 			throw new VehiculoException(VehiculoException.EXCEPTION_GENERIC);
 		}

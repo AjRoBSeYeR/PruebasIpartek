@@ -93,7 +93,11 @@ public class VehiculoController {
 			}
 
 		} catch (VehiculoException e) {
-			response = new ResponseEntity(HttpStatus.BAD_REQUEST);
+			if (e.getMessage().equals(VehiculoException.EXCEPTION_FK_CONSTRAINT)) {
+				response = new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			} else {
+				response = new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);

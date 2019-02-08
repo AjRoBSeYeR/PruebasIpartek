@@ -10,12 +10,13 @@ public class VehiculoException extends Exception {
 
 	public static final String EXCEPTION_EXIST = "El vehiculo ya existe";
 	
-	public static final String EXCEPTION_CONSTRAINT = "No se puede eliminar  un Vehiculo con  asociaciones";
+	public static final String EXCEPTION_CONSTRAINT = "Alguno de los datos proporcionados ya se encuentra registrado";
 	
 	public static final String EXCEPTION_VIOLATIONS = "No cumple las condiciones de Validación";
 	
 	public static final String EXCEPTION_GENERIC = "Error desconocido en la base de datos";
 
+	public static final String EXCEPTION_FK_CONSTRAINT = "No existe niguna referencia hacia el modelo, propietario o combustible que se intenta registrar";
 	
 	
 	private Set<ConstraintViolation> violations;
