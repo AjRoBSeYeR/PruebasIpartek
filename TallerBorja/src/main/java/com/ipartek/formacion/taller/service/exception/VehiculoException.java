@@ -3,9 +3,7 @@ package com.ipartek.formacion.taller.service.exception;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
-
-import com.ipartek.formacion.taller.modelo.pojo.Combustible;
-
+@SuppressWarnings({ "rawtypes" })
 public class VehiculoException extends Exception {
 
 	private static final long serialVersionUID = 1L;
@@ -19,7 +17,8 @@ public class VehiculoException extends Exception {
 	public static final String EXCEPTION_GENERIC = "Error desconocido en la base de datos";
 
 	
-	private Set<ConstraintViolation<Combustible>> violations;
+	
+	private Set<ConstraintViolation> violations;
 	
 	public VehiculoException(String message) {
 		super(message);				
@@ -27,18 +26,19 @@ public class VehiculoException extends Exception {
 	}
 
 
-	public VehiculoException(String message, Set<ConstraintViolation<Combustible>> violations) {
+	
+	public VehiculoException(String message, Set<ConstraintViolation> violations) {
 		this(message);
 		this.setViolations(violations);
 	}
 
 
-	public Set<ConstraintViolation<Combustible>> getViolations() {
+	public Set<ConstraintViolation> getViolations() {
 		return violations;
 	}
 
 
-	public void setViolations(Set<ConstraintViolation<Combustible>> violations) {
+	public void setViolations(Set<ConstraintViolation> violations) {
 		this.violations = violations;
 	}
 	
