@@ -64,7 +64,6 @@ public class VehiculoServiceImpl implements VehiculoService {
 
 	@Override
 	public boolean crear(Vehiculo vehiculo) throws VehiculoException {
-
 		boolean creado = false;
 		try {
 			Set<ConstraintViolation<Vehiculo>> violations = validator.validate(vehiculo, VehiculosPostCheck.class);
