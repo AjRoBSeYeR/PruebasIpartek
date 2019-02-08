@@ -19,7 +19,6 @@ import com.ipartek.formacion.taller.modelo.pojo.Vehiculo;
 import com.ipartek.formacion.taller.modelo.pojo.validactions.VehiculosPostCheck;
 import com.ipartek.formacion.taller.service.VehiculoService;
 import com.ipartek.formacion.taller.service.exception.VehiculoException;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 @Service
 public class VehiculoServiceImpl implements VehiculoService {

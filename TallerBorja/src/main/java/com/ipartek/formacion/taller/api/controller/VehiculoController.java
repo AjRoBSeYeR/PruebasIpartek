@@ -85,7 +85,6 @@ public class VehiculoController {
 
 		ResponseEntity response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		try {
-
 			if (vehiculoService.crear(vehiculo)) {
 				response = new ResponseEntity(vehiculo, HttpStatus.CREATED);
 			} else {
