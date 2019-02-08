@@ -82,7 +82,7 @@ public class VehiculoServiceImpl implements VehiculoService {
 		} catch (SQLException e) {
 			throw new VehiculoException(VehiculoException.EXCEPTION_CONSTRAINT);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new VehiculoException(VehiculoException.EXCEPTION_GENERIC);
 		}
 		return creado;
 	}

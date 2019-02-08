@@ -93,7 +93,7 @@ public class VehiculoController {
 			}
 
 		} catch (VehiculoException e) {
-			
+			response = new ResponseEntity(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
